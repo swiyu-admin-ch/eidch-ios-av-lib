@@ -1,209 +1,68 @@
+import Foundation
+import SwiftUI
+import UIKit
+
 // MARK: - AVBeam
 
-/**
- * A protocol that defines the interface for the AVBeam library, which provides
- * functionality for document scanning, recording, face capture, and NFC scanning.
- *
- * The AVBeam protocol follows a delegate pattern to handle results and notifications
- * asynchronously, with separate delegates for each major functionality area.
- */
-public protocol AVBeam {
-  /**
-   * Initializes a new AVBeam instance with the provided configuration.
-   *
-   * @param config Configuration settings required to initialize the AVBeam instance.
-   * @throws An error if initialization fails due to invalid configuration or system limitations.
-   */
-  init(config: AVBeamInitConfig) throws
+public final class AVBeam: NSObject, AVBeamProtocol {
 
-  /**
-   * Starts the document scanning process with the specified configuration.
-   *
-   * This begins a document scanning session that will capture and process document images.
-   * Results are delivered asynchronously through the `scanDocumentDelegate`.
-   *
-   * @param config Configuration settings for the document scanning process.
-   */
-  func startScanDocument(config: AVBeamScanDocumentConfig)
+  public var state = AVBeamState.notInitialized
 
-  /**
-   * Stops an ongoing document scanning session.
-   *
-   * This should be called when the scanning process is complete or needs to be
-   * canceled before completion.
-   */
-  func stopScanDocument()
+  public weak var messageDelegate: (any AVBeamMessageDelegate)?
+  public weak var scanDocumentDelegate: (any AVBeamScanDocumentDelegate)?
+  public weak var recordDocumentDelegate: (any AVBeamRecordDocumentDelegate)?
+  public weak var captureFaceDelegate: (any AVBeamCaptureFaceDelegate)?
+  public weak var nfcDelegate: (any AVBeamNfcDelegate)?
 
-  /**
-   * Starts recording a document with the specified configuration.
-   *
-   * This begins a document recording session that will capture video or a sequence of images.
-   * Results are delivered asynchronously through the `recordDocumentDelegate`.
-   *
-   * @param confgi Configuration settings for the document recording process.
-   *        Note: There is a typo in the parameter name that should be fixed (confgi → config).
-   */
-  func startRecordDocument(confgi: AVBeamRecordDocumentConfig)
+  public func initialize(using config: AVBeamInitConfig) throws {
+    messageDelegate?.didReceiveNotification(notification: .initialized)
+  }
 
-  /**
-   * Stops an ongoing document recording session.
-   *
-   * This should be called when the recording process is complete or needs to be
-   * canceled before completion.
-   */
-  func stopRecordDocument()
+  public func getGLView(width: Int, height: Int) -> UIView {
+    UIView()
+  }
 
-  /**
-   * Starts the face capturing process with the specified configuration.
-   *
-   * This begins a face detection and capture session.
-   * Results are delivered asynchronously through the `captureFaceDelegate`.
-   *
-   * @param config Configuration settings for the face capturing process.
-   */
-  func startCaptureFace(config: AVBeamCaptureFaceConfig)
+  public func startCamera() throws {
+    // No-op
+  }
 
-  /**
-   * Stops an ongoing face capturing session.
-   *
-   * This should be called when the face capturing process is complete or needs to be
-   * canceled before completion.
-   */
-  func stopCaptureFace()
+  public func stopCamera() throws {
+    // No-op
+  }
 
-  /**
-   * Delegate for handling errors and notifications that are not specific to any
-   * particular functionality.
-   *
-   * Set this delegate to receive general error messages and system notifications.
-   */
-  var messageDelegate: AVBeamMessageDelegate? { get set }
+  public func startScanDocument(config: AVBeamScanDocumentConfig) throws {
+    // No-op
+  }
 
-  /**
-   * Delegate for handling document scanning results.
-   *
-   * Set this delegate before calling `startScanDocument` to receive the results
-   * when the scanning process completes.
-   */
-  var scanDocumentDelegate: AVBeamScanDocumentDelegate? { get set }
+  public func stopScanDocument() {
+    // No-op
+  }
 
-  /**
-   * Delegate for handling document recording results.
-   *
-   * Set this delegate before calling `startRecordDocument` to receive the results
-   * when the recording process completes.
-   */
-  var recordDocumentDelegate: AVBeamRecordDocumentDelegate? { get set }
+  public func startCaptureFace(config: AVBeamCaptureFaceConfig) throws {
+    // No-op
+  }
 
-  /**
-   * Delegate for handling face capturing results.
-   *
-   * Set this delegate before calling `startCaptureFace` to receive the results
-   * when the face capturing process completes.
-   */
-  var captureFaceDelegate: AVBeamCaptureFaceDelegate? { get set }
+  public func stopCaptureFace() {
+    // No-op
+  }
 
-  /**
-   * Delegate for handling NFC scanning results.
-   *
-   * Set this delegate before calling `startScanNfc` to receive the results
-   * when the NFC scanning process completes.
-   */
-  var scanNfcDelegate: AVBeamScanNfcDelegate? { get set }
-}
+  public func startNfcScan(config: AVBeamScanNfcConfig) throws {
+    // No-op
+  }
 
-// MARK: - AVBeamMessageDelegate
+  public func stopNfcScan() {
+    // No-op
+  }
 
-/**
- * Delegate protocol for handling general messages and errors from the AVBeam system.
- *
- * Implement this protocol to receive and handle errors and notifications that are
- * not specific to any particular functionality.
- */
-public protocol AVBeamMessageDelegate: AnyObject {
-  /**
-   * Called when an error occurs during any AVBeam operation.
-   *
-   * @param error The error that occurred.
-   */
-  func didReceiveError(error: AVBeamError)
+  public func startRecordDocument(config: AVBeamRecordDocumentConfig) throws {
+    // No-op
+  }
 
-  /**
-   * Called when a notification is generated by the AVBeam system.
-   *
-   * @param notification The notification that was generated.
-   */
-  func didReceiveNotification(notification: AVBeamNotification)
-}
+  public func stopRecordDocument() {
+    // No-op
+  }
 
-// MARK: - AVBeamScanDocumentDelegate
-
-/**
- * Delegate protocol for handling document scanning results.
- *
- * Implement this protocol to receive and handle the results of a document
- * scanning operation started with `startScanDocument`.
- */
-public protocol AVBeamScanDocumentDelegate: AnyObject {
-  /**
-   * Called when the document scanning process has completed successfully.
-   *
-   * @param packageResult Contains the results of the document scanning process,
-   *                      including captured images and extracted data.
-   */
-  func didCompleteScanDocument(packageResult: AVBeamPackageResult)
-}
-
-// MARK: - AVBeamRecordDocumentDelegate
-
-/**
- * Delegate protocol for handling document recording results.
- *
- * Implement this protocol to receive and handle the results of a document
- * recording operation started with `startRecordDocument`.
- */
-public protocol AVBeamRecordDocumentDelegate: AnyObject {
-  /**
-   * Called when the document recording process has completed successfully.
-   *
-   * @param packageResult Contains the results of the document recording process,
-   *                      including the recorded video or sequence of images.
-   */
-  func didCompleteRecordDocument(packageResult: AVBeamPackageResult)
-}
-
-// MARK: - AVBeamCaptureFaceDelegate
-
-/**
- * Delegate protocol for handling face capturing results.
- *
- * Implement this protocol to receive and handle the results of a face
- * capturing operation started with `startCaptureFace`.
- */
-public protocol AVBeamCaptureFaceDelegate: AnyObject {
-  /**
-   * Called when the face capturing process has completed successfully.
-   *
-   * @param packageResult Contains the results of the face capturing process,
-   *                      including captured face images and related data.
-   */
-  func didCompleteCaptureFace(packageResult: AVBeamPackageResult)
-}
-
-// MARK: - AVBeamScanNfcDelegate
-
-/**
- * Delegate protocol for handling NFC scanning results.
- *
- * Implement this protocol to receive and handle the results of an NFC
- * scanning operation started with `startScanNfc`.
- */
-public protocol AVBeamScanNfcDelegate: AnyObject {
-  /**
-   * Called when the NFC scanning process has completed successfully.
-   *
-   * @param packageResult Contains the results of the NFC scanning process,
-   *                      including data read from the NFC chip.
-   */
-  func didCompleteScanNfc(packageResult: AVBeamPackageResult)
+  public func shutdown() {
+    // No-op
+  }
 }
