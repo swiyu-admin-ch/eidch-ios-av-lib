@@ -1,6 +1,6 @@
 import Foundation
 
-public enum AVBeamScenarioStep: Int, CaseIterable {
+public enum AVBeamScenarioStep: Int, CaseIterable, Codable {
   case none = 0
   case qrCode = 1
   case idRecognition = 2

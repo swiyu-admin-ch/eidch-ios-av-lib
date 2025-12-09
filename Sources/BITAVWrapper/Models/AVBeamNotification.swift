@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - AVBeamNotification
 
-public enum AVBeamNotification: Int {
+public enum AVBeamNotification: Int, Codable {
   // General status
   case initialized = 0
   case messageClear = 1

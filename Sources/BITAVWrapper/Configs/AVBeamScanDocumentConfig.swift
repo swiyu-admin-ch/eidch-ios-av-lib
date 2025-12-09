@@ -1,7 +1,5 @@
 import Foundation
 
-// MARK: - AVBeamScanDocumentConfig
-
 public struct AVBeamScanDocumentConfig {
 
   // MARK: Lifecycle
@@ -30,6 +28,6 @@ public struct AVBeamScanDocumentConfig {
 
   // MARK: Internal
 
-  let xmlData = ""
+  let xmlData = "" // Not used from PXL SDK implementation
   let transactionCode = ""
 }

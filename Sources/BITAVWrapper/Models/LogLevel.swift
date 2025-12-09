@@ -1,3 +1,4 @@
+/// Map enum based on ELogLevel enum present in PXLSDK
 public enum LogLevel: Int {
   case none = 0
   case errors = 1

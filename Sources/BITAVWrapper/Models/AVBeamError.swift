@@ -1,6 +1,6 @@
 import Foundation
 
-public enum AVBeamError: Int, Error {
+public enum AVBeamError: Int, Error, Codable {
   // Special cases
   case noImages = 999
   case none = 0
@@ -156,6 +156,7 @@ public enum AVBeamError: Int, Error {
   case startNfcScan = 9020
   case startDocumentRecording = 9030
   case startCamera = 9100
+  case startFrontCamera = 9101
   case stopCamera = 9110
   case wrapperNotSet = 9200
 

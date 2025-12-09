@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - AVBeamFileType
 
-public enum AVBeamFileType: Int, CaseIterable {
+public enum AVBeamFileType: Int, CaseIterable, Codable {
   case unknown = -1
 
   // Document formats

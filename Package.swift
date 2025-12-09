@@ -11,11 +11,11 @@ let package = Package(
       name: "BITAVWrapper",
       targets: ["BITAVWrapper"]),
   ],
-  dependencies: [],
   targets: [
+    /// Main BITAVWrapper target
     .target(
       name: "BITAVWrapper"),
     .testTarget(
       name: "BITAVWrapperTests",
-      dependencies: ["BITAVWrapper"]),
+      dependencies: ["BITAVWrapper"])
   ])

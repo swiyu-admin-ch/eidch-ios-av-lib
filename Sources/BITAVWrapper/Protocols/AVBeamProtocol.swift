@@ -10,7 +10,7 @@ import UIKit
  * AVBeam follows a delegate pattern to handle results and notifications
  * asynchronously, with separate delegates for each major functionality area.
  */
-public protocol AVBeamProtocol: AnyObject {
+public protocol AVBeamProtocol: AnyObject, Sendable {
   /**
    * Default initializer for creating an AVBeam instance.
    *
@@ -74,6 +74,15 @@ public protocol AVBeamProtocol: AnyObject {
   func startCamera() throws
 
   /**
+   * Activates the device front camera for scanning operations.
+   *
+   * Must be called before starting any scanning or capture operations.
+   *
+   * @throws AVBeamError if camera access is denied or the camera is unavailable.
+   */
+  func startFrontCamera() throws
+
+  /**
    * Deactivates the device camera.
    *
    * Should be called when scanning operations are complete to release camera resources.
@@ -90,6 +99,10 @@ public protocol AVBeamProtocol: AnyObject {
    *
    * @param config Configuration settings for the document scanning process.
    * @throws AVBeamError if scanning cannot be started or the camera is not active.
+   *
+   * @note This method returns immediately. All processing and results are delivered
+   *       asynchronously through the delegate pattern on a background thread, with
+   *       delegate callbacks dispatched to the main thread for UI updates.
    */
   func startScanDocument(config: AVBeamScanDocumentConfig) throws
 
@@ -98,6 +111,9 @@ public protocol AVBeamProtocol: AnyObject {
    *
    * This should be called when the scanning process is complete or needs to be
    * canceled before completion.
+   *
+   * @note This method returns immediately. Final results, if any, will be delivered
+   *       through the `scanDocumentDelegate`.
    */
   func stopScanDocument()
 
@@ -109,6 +125,10 @@ public protocol AVBeamProtocol: AnyObject {
    *
    * @param config Configuration settings for the face capturing process.
    * @throws AVBeamError if face capture cannot be started or the camera is not active.
+   *
+   * @note This method returns immediately. All processing and results are delivered
+   *       asynchronously through the delegate pattern on a background thread, with
+   *       delegate callbacks dispatched to the main thread for UI updates.
    */
   func startCaptureFace(config: AVBeamCaptureFaceConfig) throws
 
@@ -117,6 +137,9 @@ public protocol AVBeamProtocol: AnyObject {
    *
    * This should be called when the face capturing process is complete or needs to be
    * canceled before completion.
+   *
+   * @note This method returns immediately. Final results, if any, will be delivered
+   *       through the `captureFaceDelegate`.
    */
   func stopCaptureFace()
 
@@ -151,6 +174,10 @@ public protocol AVBeamProtocol: AnyObject {
    *               recording duration, quality settings, and output format preferences.
    * @throws AVBeamError if recording cannot be started, the camera is not active,
    *                     or insufficient storage space is available.
+   *
+   * @note This method returns immediately. All processing and results are delivered
+   *       asynchronously through the delegate pattern on a background thread, with
+   *       delegate callbacks dispatched to the main thread for UI updates.
    */
   func startRecordDocument(config: AVBeamRecordDocumentConfig) throws
 
@@ -161,7 +188,7 @@ public protocol AVBeamProtocol: AnyObject {
    * canceled before completion. Any partial recording data may be preserved
    * depending on the implementation and configuration settings.
    *
-   * @note Stopping a recording session will trigger the final result callback
+   * @note This method returns immediately. Final results will be delivered
    *       through the `recordDocumentDelegate` if one is set.
    */
   func stopRecordDocument()
@@ -187,9 +214,6 @@ public protocol AVBeamProtocol: AnyObject {
    *
    * Set this delegate before calling `startRecordDocument` to receive the results
    * when the recording process completes or provides incremental updates.
-   *
-   * Note: The `startRecordDocument` method is not defined in this protocol but
-   * is likely part of a more complete implementation.
    */
   var recordDocumentDelegate: AVBeamRecordDocumentDelegate? { get set }
 
