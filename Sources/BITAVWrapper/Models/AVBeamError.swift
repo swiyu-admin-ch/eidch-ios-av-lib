@@ -165,4 +165,18 @@ public enum AVBeamError: Int, Error, Codable {
   public init?(_ error: Int) {
     self.init(rawValue: error)
   }
+
+  public var textkey: String {
+    return "avbeam_error_\(self)"
+  }
+}
+
+// MARK: - LocalizedError
+
+extension AVBeamError: LocalizedError {
+
+  // Returns the textkey which must be mapped in the app translations
+  public var errorDescription: String? {
+    textkey
+  }
 }
