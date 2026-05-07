@@ -73,6 +73,10 @@ public final class AVBeam: NSObject, AVBeamProtocol, @unchecked Sendable {
   public func shutdown()  {
     // no-op
   }
+
+  public func notifySecondScan()  {
+    // no-op
+  }
   
 }
 

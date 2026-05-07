@@ -194,6 +194,12 @@ public protocol AVBeamProtocol: AnyObject, Sendable {
   func stopRecordDocument()
 
   /**
+   * Manually triggers scan of the 2nd page
+   * `AVBeamScanDocumentConfig.isDocumentSideChangeNotificationExpected` must be set to true
+   */
+  func notifySecondScan()
+
+  /**
    * Delegate for handling errors and notifications that are not specific to any
    * particular functionality.
    *
