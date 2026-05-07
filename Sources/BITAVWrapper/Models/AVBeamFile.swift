@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AVBeamFile: Codable, Equatable {
+public struct AVBeamFile: Codable, Equatable, Hashable {
   public let type: AVBeamFileType
   public let description: String
   public let data: Data
