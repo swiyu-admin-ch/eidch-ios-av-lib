@@ -11,9 +11,7 @@ public struct AVBeamScanNfcConfig: Codable, Equatable {
     authToken: String? = nil,
     showProgress: Bool = true,
     popupMessages: [String: String] = [:],
-    saveAdditionalFiles: Bool = false,
-    saveAuthResult: Bool = false,
-    saveNfcResult: Bool = false,
+    saveDebugInfo: Bool = true,
     processId: String = "",
     transactionId: String = "")
   {
@@ -23,9 +21,7 @@ public struct AVBeamScanNfcConfig: Codable, Equatable {
     self.authToken = authToken
     self.showProgress = showProgress
     self.popupMessages = popupMessages
-    self.saveAdditionalFiles = saveAdditionalFiles
-    self.saveAuthResult = saveAuthResult
-    self.saveNfcResult = saveNfcResult
+    self.saveDebugInfo = saveDebugInfo
     self.processId = processId
     self.transactionId = transactionId
   }
@@ -39,9 +35,7 @@ public struct AVBeamScanNfcConfig: Codable, Equatable {
   let showProgress: Bool
   let popupMessages: [String: String]
 
-  let saveAdditionalFiles: Bool
-  let saveAuthResult: Bool
-  let saveNfcResult: Bool
+  let saveDebugInfo: Bool
 
   let processId: String
   let transactionId: String
